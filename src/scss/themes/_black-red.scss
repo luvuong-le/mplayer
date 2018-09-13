@@ -1,0 +1,49 @@
+.mp--black-red {
+	background: rgba(0, 0, 0, 0.9);
+	border: 3px double crimson;
+	color: crimson;
+
+	#{$mp}__playlist {
+		&-btn {
+			color: crimson;
+			font-weight: bold;
+			&--selected,
+			&:hover {
+				background-color: rgba(220, 20, 60, 0.5);
+			}
+		}
+	}
+
+	#{$mp}__options {
+		background-color: #000;
+		color: crimson;
+
+		& > h3 {
+			color: #fff;
+		}
+
+		&-label-caption {
+			color: #fff;
+		}
+	}
+
+	#{$mp}__controls {
+		&-btn {
+			background: rgba(54, 53, 53, 0.835);
+			box-shadow: 0.5rem 0.2rem 1rem crimson;
+			transition: all 0.2s;
+		}
+	}
+
+	input[type='range']::-ms-fill-lower {
+		background: rgba(crimson, 0.85);
+	}
+
+	input[type='range']::-moz-range-progress {
+		background: rgba(crimson, 0.85);
+	}
+
+	input[type='range']::-webkit-slider-thumb {
+		box-shadow: -100vw 0 0 100vw rgba(crimson, 0.85);
+	}
+}

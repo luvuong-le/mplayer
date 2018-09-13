@@ -1,0 +1,83 @@
+.mp--light {
+	background: #fff;
+	color: #000;
+	font-weight: bolder;
+	border-radius: 0;
+	letter-spacing: 0.3rem;
+	border: 0.2px solid #ccc;
+
+	#{$mp}__details {
+		background: rgba(223, 222, 222, 0.979);
+	}
+
+	#{$mp}__playlist {
+		color: #000;
+		&-btn {
+			color: #000;
+			font-size: 1.5rem;
+			letter-spacing: 0.2rem;
+			font-weight: bold;
+
+			&--selected,
+			&:hover {
+				color: #fff;
+				border: 0;
+				background: rgba(0, 0, 0, 0.7);
+			}
+		}
+		&-items {
+			color: #000;
+		}
+	}
+
+	#{$mp}__options {
+		background-color: rgba(223, 222, 222, 0.979);
+		* {
+			color: #000;
+		}
+
+		& > h3 {
+			color: #000;
+		}
+
+		&-toggle {
+			background: #000;
+		}
+
+		&-theme-select,
+		&-upload-btn {
+			font-size: 1.9rem;
+			letter-spacing: 0.3rem;
+			background: #ccc;
+		}
+
+		&-theme-select > * {
+			background: #fff;
+		}
+	}
+
+	#{$mp}__song-duration {
+		&-bar {
+			height: 10px;
+		}
+	}
+
+	#{$mp}__controls {
+		&-btn {
+			background: rgba(255, 255, 255, 0.835);
+			transition: all 0.2s;
+		}
+	}
+
+	input[type='range']::-ms-fill-lower {
+		background: rgba(0, 0, 0, 0.7);
+	}
+
+	input[type='range']::-moz-range-progress {
+		background: rgba(0, 0, 0, 0.7);
+	}
+
+	input[type='range']::-webkit-slider-thumb {
+		box-shadow: -100vw 0 0 100vw rgba(0, 0, 0, 0.7);
+	}
+}

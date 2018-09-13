@@ -1,0 +1,4 @@
+node_modules
+dist/images
+dist/music
+src/js/main.js

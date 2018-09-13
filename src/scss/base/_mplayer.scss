@@ -1,0 +1,358 @@
+%btn-hover {
+	background: #fff;
+	color: #000;
+	border: 1px solid #000;
+	transform: translateY(-0.5rem);
+}
+
+.mp {
+	width: 35%;
+	height: 75%;
+	max-width: 35%;
+	max-height: 75%;
+	background-color: #000;
+	color: #fff;
+	margin: 0 auto;
+	font-size: 2rem;
+	padding-top: 1.5rem;
+	transition: all 1.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	overflow: hidden;
+	box-shadow: 0.8rem 1rem 1rem #aaa;
+	border-radius: 5px;
+
+	@include respond(tablet-landscape) {
+		width: 75%;
+		max-width: 80%;
+		height: 98%;
+		overflow: auto;
+	}
+
+	@include respond(tablet-portrait) {
+		width: 100%;
+		height: 98%;
+		overflow: auto;
+	}
+
+	&__details {
+		display: grid;
+		grid-template-rows: max-content 4rem min-content;
+		grid-template-columns: max-content 1fr;
+		grid-column-gap: 3rem;
+		grid-row-gap: 1rem;
+		height: 40%;
+		padding: 1.5rem;
+
+		@include respond(phone) {
+			height: 50%;
+			grid-template-rows: max-content 4rem 7rem;
+			grid-column-gap: 2rem;
+		}
+	}
+
+	&-cover {
+		@include respond(phone) {
+			height: 10px;
+			width: 20px;
+		}
+	}
+
+	&__playing {
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+
+		&-now {
+			@include respond(phone) {
+				width: 150px;
+				text-overflow: ellipsis;
+				/* Required for text-overflow to do anything */
+
+				white-space: nowrap;
+				overflow: hidden;
+			}
+
+			word-break: break-all;
+
+			animation: slideLeftToRight 2s linear infinite;
+		}
+	}
+
+	&__controls {
+		margin-top: 1.5rem;
+		display: flex;
+
+		@include respond(phone) {
+			display: grid;
+			grid-template-columns: repeat(3, min-content);
+			grid-template-rows: repeat(2, max-content);
+			align-items: center;
+			grid-gap: 1rem;
+		}
+
+		&-btn {
+			justify-self: center;
+			height: 5rem;
+			width: 5rem;
+			border: 0;
+			border-radius: 50%;
+			padding: 1.5rem 0rem;
+			cursor: pointer;
+			transition: all 0.2s;
+			background: #fff;
+
+			@include respond(phone) {
+				height: 4.5rem;
+				width: 4.5rem;
+			}
+
+			&:focus {
+				outline: none;
+			}
+
+			&:not(:first-child) {
+				margin-left: 1rem;
+			}
+
+			@include respond(phone) {
+				&:not(:first-child) {
+					margin-left: 0rem;
+				}
+			}
+
+			&:hover {
+				background: #aaa;
+				color: #000;
+				border: 0.15rem solid #567da5;
+				transform: translateY(-0.2rem);
+			}
+
+			&:active {
+				transform: translateY(0.2rem);
+				outline: none;
+			}
+		}
+
+		&-icon {
+			width: 100%;
+			height: 100%;
+			fill: #000;
+		}
+
+		&-check {
+			opacity: 0;
+			visibility: hidden;
+
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+
+	&__song-duration {
+		grid-column: 1 / -1;
+		display: grid;
+		grid-template-rows: repeat(2, 1fr);
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 1rem;
+
+		&-bar {
+			grid-row: 2 / -1;
+			grid-column: 1 / -1;
+			align-self: center;
+			height: 80%;
+			width: 95%;
+			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			-ms-appearance: none;
+			border-radius: 1rem;
+			background-color: gray;
+			cursor: pointer;
+			overflow: hidden;
+
+			&:focus {
+				outline: none;
+			}
+		}
+
+		&-end {
+			justify-self: end;
+			margin-right: 1rem;
+		}
+	}
+
+	&__volume {
+		grid-column: 1 / -1;
+		margin-top: 1rem;
+		display: flex;
+
+		@include respond(phone) {
+			height: 35%;
+		}
+
+		&-slider {
+			width: 90%;
+			background-color: gray;
+			appearance: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			-ms-appearance: none;
+			cursor: pointer;
+			overflow: hidden;
+		}
+
+		&-value {
+			margin: -0.2rem 1rem;
+			font-size: 2rem;
+			font-weight: bold;
+		}
+
+		&-icon {
+			width: 3rem;
+			height: 2rem;
+			fill: #fff;
+			margin: 0.2rem 1rem;
+		}
+	}
+
+	&__playlist {
+		position: relative;
+		height: 60%;
+		padding: 3rem;
+		padding-bottom: 4rem;
+
+		@include respond(phone) {
+			height: 50%;
+			overflow-y: hidden;
+		}
+
+		@media screen and (min-height: 280px) and (max-height: 650px) and (orientation: landscape) {
+			margin-top: 13rem;
+		}
+
+		@media screen and (max-height: 280px) and (orientation: landscape) {
+			margin-top: 13rem;
+		}
+
+		@media screen and (max-height: 350px) and (orientation: landscape) {
+			height: 100%;
+		}
+
+		&-items {
+			height: 100%;
+			width: 100%;
+			overflow: auto;
+			padding-right: 1rem;
+			word-break: break-all;
+
+			@include respond(phone) {
+				overflow-x: hidden;
+			}
+		}
+
+		&-btn {
+			font-family: 'Audiowide', cursive;
+			transition: all 0.2s;
+			width: 100%;
+			border: 0;
+			padding: 1rem;
+			text-align: left;
+			cursor: pointer;
+			margin: 1rem 0;
+			background: transparent;
+			color: #fff;
+			border: 1px solid #fff;
+			display: flex;
+
+			& > span:last-child {
+				margin-right: auto;
+				flex-grow: 1;
+				text-align: right;
+			}
+
+			&--selected {
+				background: #567da5;
+			}
+
+			&:hover {
+				background: rgba(255, 255, 255, 0.877);
+				color: #000;
+				border: 1px solid #000;
+				transform: translateY(-0.5rem);
+			}
+
+			&:active {
+				transform: translateY(1rem);
+			}
+		}
+	}
+}
+
+// Slider Thumbs
+
+input[type='range']::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: 100%;
+	width: 2rem;
+	background: #fff;
+	box-shadow: -100vw 0 0 100vw dodgerblue;
+}
+
+input[type='range']::-moz-range-thumb {
+	-moz-appearance: none;
+	height: 100%;
+	width: 2rem;
+	background: #fff;
+}
+
+input[type='range']::-ms-thumb {
+	-ms-appearance: none;
+	height: 100%;
+	width: 0;
+	background: #fff;
+}
+
+// Range Tracks
+
+input[type='range']::-webkit-slider-runnable-track {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	background: rgba(#fff, 0.4);
+	box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input[type='range']::-moz-range-track {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	background: rgba(#fff, 0.4);
+	box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input[type='range']::-ms-track {
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	background: rgba(#fff, 0.4);
+	box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+// Progress Fill
+
+input[type='range']::-ms-fill-lower {
+	background: rgba(dodgerblue, 0.4);
+	height: 100%;
+}
+
+input[type='range']::-moz-range-progress {
+	background: rgba(dodgerblue, 0.4);
+	height: 100%;
+}
+
+// Chrome fill is done by a boxshadow covering the entire view port but with overflow hidden
+
+// Hide MS Tool tip
+input[type='range']::-ms-tooltip {
+	display: none;
+}
