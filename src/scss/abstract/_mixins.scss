@@ -42,3 +42,27 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
+
+@mixin ftopLeft() {
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+@mixin ftopRight() {
+	position: fixed;
+	top: 0;
+	right: 0;
+}
+
+@mixin fbottomLeft() {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+}
+
+@mixin fbottomRight() {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+}

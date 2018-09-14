@@ -1,8 +1,8 @@
 .mp__mini {
 	width: 30%;
-	height: 25%;
+	height: 27%;
 	max-width: 30%;
-	max-height: 25%;
+	max-height: 27%;
 
 	@include respond(tablet-landscape) {
 		width: 50%;
@@ -14,9 +14,8 @@
 
 	@include respond(phone) {
 		width: 90%;
-		height: 30%;
-		max-height: 30%;
-		min-width: 34rem;
+		height: 25%;
+		max-height: 25%;
 		max-width: 90%;
 	}
 

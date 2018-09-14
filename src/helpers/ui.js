@@ -86,9 +86,16 @@ export default {
 		return document.querySelector(elClass);
 	},
 
+	/**
+	 * @param  {String} elClass
+	 */
+	queryAll: elClass => {
+		return document.querySelectorAll(elClass);
+	},
+
 	removeClassAll: function(elQuery, className) {
 		Array.from(document.querySelectorAll(elQuery)).forEach(el => {
 			this.rmClass(el, className);
-		})
-	}
+		});
+	},
 };
