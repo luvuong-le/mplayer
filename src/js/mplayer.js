@@ -41,12 +41,14 @@ export default class MPlayer {
 
     get progressBar() { return ui.getElId('mpProgressBar') }
 
+    get volumeIcon() { return ui.getElId('mpVolumeIcon') }
+
     get volumeBar() { return ui.getElId('mp__volume-slider') }
 
     get volumeValue() { return ui.getElId('mpVolumeValue') }
 
     /**
-     * @description Set Configuration Options
+     * @description Set configuration options passed through 
      */
     setConfigurations() {
         ui.addClass(this.container, 'mp');
@@ -63,6 +65,11 @@ export default class MPlayer {
         }
     }
 
+    
+    /**
+     * @param  {String} position
+     * @description Adds a fixed class to make the player in a fixed position
+     */
     setFixedPosition(position) {
         switch (position) {
             case 'TOP_LEFT':
@@ -102,7 +109,9 @@ export default class MPlayer {
                 this.progressBar.max = audioElement.duration;
                 this.playing.push(audioElement);
                 this.updateSongDetails(this.dataSongList[this.currentAudioIndex]);
+                this.toggleSelected(this.playlistBtns[this.currentAudioIndex]);
                 this.currentAudio.volume = ui.getElId('mp__volume-slider').value / 100;
+                this.playIconToggle();
 
                 audioElement.addEventListener('timeupdate', () => {
                     const time = audioElement.currentTime * 1000;
@@ -112,92 +121,111 @@ export default class MPlayer {
 
                     this.progressBar.value = (audioElement == null) ? 0 : audioElement.currentTime;
                 });
+                
             }).catch((err) => console.log(err));
         }
 
         audioElement.addEventListener('ended', () => {
             if (this.repeat) {
-                this.play(audioElement);
-            } else {
-                if (this.shuffle) {
-                    this.playRandomSong();
-                } else {
-                    this.playNextSong();
-                }
+                return this.play(audioElement);
             }
+
+            this.shuffle ? this.playRandomSong() : this.playNextSong();
         });
+    }
+
+    playIconToggle() {
+        if (this.currentAudio && !this.currentAudio.paused) {
+            ui.rmClass(ui.getElId('mpPlayBtn'), 'fa-play');
+            ui.addClass(ui.getElId('mpPlayBtn'), 'fa-pause');
+        } else {
+            ui.rmClass(ui.getElId('mpPlayBtn'), 'fa-pause');
+            ui.addClass(ui.getElId('mpPlayBtn'), 'fa-play');
+        }
     }
 
     playToggle() {
         if (this.playing.length !== 0) {
-            if (this.currentAudio.paused) {
-                this.currentAudio.play();
-                ui.rmClass(ui.getElId('mpPlayBtn'), 'fa-play');
-                ui.addClass(ui.getElId('mpPlayBtn'), 'fa-pause');
-            } else {
-                this.currentAudio.pause();
-                ui.rmClass(ui.getElId('mpPlayBtn'), 'fa-pause');
-                ui.addClass(ui.getElId('mpPlayBtn'), 'fa-play');
-            }
+            this.currentAudio.paused ? this.currentAudio.play() : this.currentAudio.pause();
+            this.playIconToggle();
         } else {
             this.play(this.firstSong);
-            ui.rmClass(ui.getElId('mpPlayBtn'), 'fa-play');
-            ui.addClass(ui.getElId('mpPlayBtn'), 'fa-pause');
-
-            // Remove All Selected
+            this.playIconToggle();
             this.toggleSelected(ui.query('.mp__playlist-btn'));
         }
     }
 
     playNextSong() {
-        if (this.shuffle) {
-            console.log(true);
-            this.playRandomSong();
+        this.shuffle ? this.playRandomSong() : null;
+        
+        if (!this.currentAudio) return; 
+ 
+        if (this.currentAudioIndex === this.dataSongList.length - 1) {
+            this.toggleSelected(this.playlistBtns[0]);
+            this.play(this.firstSong);
         } else {
-            if (this.currentAudio) {
-                if (this.currentAudioIndex === this.dataSongList.length - 1) {
-                    this.toggleSelected(this.playlistBtns[0]);
-                    this.play(this.firstSong);
-                } else {
-                    this.toggleSelected(this.playlistBtns[this.currentAudioIndex + 1]);
-                    const next = this.dataAudioElementList[this.currentAudioIndex + 1]
-                    this.play(next);
-                }
-            }
+            this.toggleSelected(this.playlistBtns[this.currentAudioIndex + 1]);
+            this.play(this.dataAudioElementList[this.currentAudioIndex + 1]);
         }
     }
 
-    playRandomSong() {
-        this.toggleSelected(this.playlistBtns[this.randomIndex]);
-        this.play(this.dataAudioElementList[this.randomIndex]);
-    }
+    playRandomSong() { this.play(this.dataAudioElementList[this.randomIndex]) }
 
     playPreviousSong() {
-        if (this.currentAudio) {
-            console.log(this.currentAudioIndex);
-            if (this.currentAudioIndex === 0) {
-                this.toggleSelected(this.playlistBtns[this.playlistBtns.length - 1]);
-                this.play(this.lastSong);
-            } else {
-                this.toggleSelected(this.playlistBtns[this.currentAudioIndex - 1]);
-                const previous = this.dataAudioElementList[this.currentAudioIndex - 1]
-                this.play(previous);
+        if (!this.currentAudio) return; 
+        
+        if (this.currentAudioIndex === 0) {
+            this.toggleSelected(this.playlistBtns[this.playlistBtns.length - 1]);
+            this.play(this.lastSong);
+        } else {
+            this.toggleSelected(this.playlistBtns[this.currentAudioIndex - 1]);
+            this.play(this.dataAudioElementList[this.currentAudioIndex - 1]);
+        }
+    }
+    
+    setMultiSongCheck() {
+        setInterval(() => {
+            if (this.playing.length >= 2) {
+                for (let i = 1; i < this.playing.length; i++) {
+                    this.playing[i].pause();
+                }
+                this.playing.splice(1);
+                this.progressBar.max = this.currentAudio.duration;
+                this.currentAudio.paused ? this.currentAudio.play() : null;
             }
+        }, 500);
+    }
+
+    setVolume() {
+        this.volumeValue.textContent = this.volumeBar.value;
+        this.currentAudio ? this.currentAudio.volume = this.volumeBar.value / 100 : null;
+
+        if (parseInt(this.volumeValue.textContent) === 0) {
+			ui.setNewClass(this.volumeIcon, 'mp__volume-value fas fa-volume-off');
+		}
+
+        if (parseInt(this.volumeValue.textContent)  > 0 && parseInt(this.volumeValue.textContent)  < 35) {
+            ui.setNewClass(this.volumeIcon, 'mp__volume-value fas fa-volume-down');
+        }
+
+        if (parseInt(this.volumeValue.textContent)  > 35 && parseInt(this.volumeValue.textContent)  < 75) {
+            ui.setNewClass(this.volumeIcon, 'mp__volume-value fas fa-volume-down');
+        }
+
+        if (parseInt(this.volumeValue.textContent)  > 75 && parseInt(this.volumeValue.textContent)  <= 100) {
+            ui.setNewClass(this.volumeIcon, 'mp__volume-value fas fa-volume-up');
         }
     }
 
     updateSongDetails(songData) {
-        ui.query('.mp__details-cover').src = (songData.cover === null) ? 'https://via.placeholder.com/150x150' : songData.cover;
+        ui.query('.mp__details-cover').src = (!songData.cover) ? 'https://via.placeholder.com/150x150' : songData.cover;
         ui.query('.mp__playing-now').textContent = songData.name.toLowerCase();
-
-        if (this.currentAudio) {
-            this.endTimeEl.textContent = moment.utc(this.currentAudio.duration * 1000).format('mm:ss');
-        }
+        this.currentAudio ? this.endTimeEl.textContent = moment.utc(this.currentAudio.duration * 1000).format('mm:ss') : null;
     }
 
     toggleControl(property, e) {
         this[property] = !this[property];
-        return this[property] === true ? (e.target.style.color = '#ccc') : (e.target.style.color = '#000'); ;
+        return this[property] ? (e.target.style.color = '#ccc') : (e.target.style.color = '#000'); ;
     }
 
     toggleSelected(element) {
@@ -216,7 +244,6 @@ export default class MPlayer {
 
         // Controls here
         let mpControls = ui.el('div', { id: 'mpControls', class: 'mp__controls' });
-
         ui.append(nowPlaying, mpControls);
 
         /* Play */
@@ -268,14 +295,11 @@ export default class MPlayer {
 
         let volumeSlider = ui.el('input', { type: 'range', id: 'mp__volume-slider', class: 'mp__volume-slider', min: 0, max: 100, value: 50});
 
-        ui.append(volumeDiv, ui.createIcon(['mp__volume-value', 'fas', 'fa-volume-up']));
+        ui.append(volumeDiv, ui.createIcon(['mp__volume-value', 'fas', 'fa-volume-up'], 'mpVolumeIcon'));
         ui.append(volumeDiv, volumeSlider);
         ui.append(volumeDiv, ui.el('span', { id: 'mpVolumeValue', class: 'mp__volume-value' }, volumeSlider.value)); 
         
-        volumeDiv.addEventListener('input', (e) =>  {
-            ui.getElId('mpVolumeValue').textContent = e.target.value; 
-            this.currentAudio ? this.currentAudio.volume = e.target.value / 100 : null ;
-        });
+        volumeSlider.addEventListener('input', e => this.setVolume());
 
         ui.appendMulti(mpDetails, [nowPlaying, songDurationDiv, volumeDiv]);
         ui.append(this.container, mpDetails);
@@ -325,7 +349,7 @@ export default class MPlayer {
     }
 
     addListeners() {
-        this.progressBar.addEventListener('input', (e) => {
+        this.progressBar.addEventListener('input', e => {
             if (this.progressBar && this.currentAudio) {
                 this.currentAudio.currentTime = e.target.value;
                 this.progressBar.value = e.target.value;
@@ -333,11 +357,7 @@ export default class MPlayer {
         });
 
         window.addEventListener('keydown', e => {
-			const LEFT = 37,
-				RIGHT = 39,
-				SPACE = 32,
-				UP = 38,
-				DOWN = 40;
+			const LEFT = 37, RIGHT = 39, SPACE = 32, UP = 38, DOWN = 40;
 			switch (e.keyCode) {
 				case LEFT: 
 					this.playPreviousSong();
@@ -350,13 +370,11 @@ export default class MPlayer {
 					break;
 				case UP:
                     this.volumeBar.value++;
-                    this.volumeValue.textContent = this.volumeBar.value;
-                    this.currentAudio ? this.currentAudio.volume = this.volumeBar.value / 100 : null;
+                    this.setVolume();
 					break;
 				case DOWN:
                     this.volumeBar.value--;
-                    this.volumeValue.textContent = this.volumeBar.value;
-                    this.currentAudio ? this.currentAudio.volume = this.volumeBar.value / 100 : null;
+                    this.setVolume();
 					break;
 				default:
 					console.log('Error');
@@ -371,6 +389,7 @@ export default class MPlayer {
             this.createPlaylist();
             this.addListeners();
             this.setConfigurations();
+            this.setMultiSongCheck();
         }
     }
 }

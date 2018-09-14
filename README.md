@@ -2,6 +2,7 @@
 
 [![devDependencies Status](https://david-dm.org/luvuong-le/mplayer-module/dev-status.svg)](https://david-dm.org/luvuong-le/mplayer-module?type=dev)
 [![dependencies Status](https://david-dm.org/luvuong-le/mplayer-module/status.svg)](https://david-dm.org/luvuong-le/mplayer-module)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 ## Development Status: In Progress
 
@@ -83,3 +84,7 @@ songList = {
     Materialistic: 'mp--materialistic'
     Light Theme: 'mp--light'
 ```
+
+### Notes
+
+-   Song Names must be unique

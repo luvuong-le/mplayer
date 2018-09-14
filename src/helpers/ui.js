@@ -52,6 +52,11 @@ export default {
 		el.classList.remove(className);
 	},
 
+	setNewClass: (el, className) => {
+		el.classList = [];
+		el.className = className;
+	},
+
 	/**
 	 * @param  {String} elName
 	 */
