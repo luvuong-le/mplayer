@@ -1,4 +1,5 @@
 node_modules
 dist/images
 dist/music
+dist/*.html
 src/js/main.js
