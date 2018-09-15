@@ -28,6 +28,10 @@ A HTML Music Player for the Web. Rebuilt from a previous version in order to be 
 
 ```javascript
 npm install
+
+npm run dev - Run webpack in development mode
+
+npm run build - Run webpack in production mode
 ```
 
 ### Setup / Usage
@@ -84,22 +88,22 @@ Materialistic: 'mp--materialistic'
 Light Theme: 'mp--light'
 ```
 
-### Custom Themes
+### Custom Theme Development
 
 ```javascript
-In the options pass in your own custom theme name
+In the options pass in your own custom theme name:
 
 new MPlayer({
 	theme: 'custom_theme--name'
-})
+});
 
-Create your own theme file under 'scss/themes' folder
+Create your own theme file under 'scss/themes' folder: ie. '_custom-theme.scss'
 
-'_custom-theme.scss'
+##  Look at the theme layout file for references ##
+
+Build the project using "npm run build" after SCSS editing is complete
 
 Import into main.scss: @import 'themes/custom-theme.scss'
-
-##  Look at the theme layout file for reference ##
 ```
 
 ## Additional

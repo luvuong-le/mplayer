@@ -1,6 +1,5 @@
 import moment from  'moment';
 import ui from '../helpers/ui';
-
 import '../scss/main.scss';
 
 export default class MPlayer {
@@ -20,8 +19,8 @@ export default class MPlayer {
     }
 
     /**
-        Getters
-    */
+     * @description Defines the getters
+     */
 
     get currentAudio() { return this.playing[0] }
 
@@ -60,8 +59,8 @@ export default class MPlayer {
         this.fixed && this.mini && this.position ? this.setFixedPosition(this.position) : null;
 
         if (this.volume) {
-            ui.getElId('mp__volume-slider').value = this.volume * 100;
-            ui.getElId('mpVolumeValue').textContent = this.volume * 100;
+            this.volumeBar.value = this.volume * 100;
+            this.volumeValue.textContent = this.volume * 100;
         }
     }
 
@@ -90,7 +89,11 @@ export default class MPlayer {
         }
     }
 
-    /** Functionality */
+    /** MPlayer Functionality */
+
+    /**
+     * @description Clears/Stops all songs
+     */
     stopAll() {
         if (this.playing.length !== 0) {
             this.currentAudio.pause();
@@ -99,6 +102,11 @@ export default class MPlayer {
         }
     }
 
+    /**
+     * 
+     * @param {HTMLAudioElement} audioElement 
+     * @description Plays the audio element passed in and updates the mplayer
+     */
     play(audioElement) {
         this.stopAll();
 
@@ -134,6 +142,9 @@ export default class MPlayer {
         });
     }
 
+    /**
+     * @description Toggles the play button font awesome icon
+     */
     playIconToggle() {
         if (this.currentAudio && !this.currentAudio.paused) {
             ui.rmClass(ui.getElId('mpPlayBtn'), 'fa-play');
@@ -144,6 +155,9 @@ export default class MPlayer {
         }
     }
 
+    /**
+     * @description Toggles the audio element between playing and paused states
+     */
     playToggle() {
         if (this.playing.length !== 0) {
             this.currentAudio.paused ? this.currentAudio.play() : this.currentAudio.pause();
@@ -155,6 +169,9 @@ export default class MPlayer {
         }
     }
 
+    /**
+     * @description Plays the next song depending on the current index
+     */
     playNextSong() {
         this.shuffle ? this.playRandomSong() : null;
         
@@ -169,8 +186,15 @@ export default class MPlayer {
         }
     }
 
+    /**
+     * @description Plays a random song using a randomly generated index
+     */
     playRandomSong() { this.play(this.dataAudioElementList[this.randomIndex]) }
 
+
+    /**
+     * @description Play the previous song
+     */
     playPreviousSong() {
         if (!this.currentAudio) return; 
         
@@ -183,6 +207,9 @@ export default class MPlayer {
         }
     }
     
+    /**
+     * @description Check to see if there are two songs playing at once and only play the first song in the array
+     */
     setMultiSongCheck() {
         setInterval(() => {
             if (this.playing.length >= 2) {
@@ -196,6 +223,9 @@ export default class MPlayer {
         }, 500);
     }
 
+    /**
+     * @description Sets the volume and volume icon change
+     */
     setVolume() {
         this.volumeValue.textContent = this.volumeBar.value;
         this.currentAudio ? this.currentAudio.volume = this.volumeBar.value / 100 : null;
@@ -217,12 +247,23 @@ export default class MPlayer {
         }
     }
 
+    /**
+     * 
+     * @param {object} songData
+     * @description Update song data in the UI based on the song data
+     */
     updateSongDetails(songData) {
         ui.query('.mp__details-cover').src = (!songData.cover) ? 'https://via.placeholder.com/150x150' : songData.cover;
         ui.query('.mp__playing-now').textContent = songData.name;
         this.currentAudio ? this.endTimeEl.textContent = moment.utc(this.currentAudio.duration * 1000).format('mm:ss') : null;
     }
 
+    /**
+     * 
+     * @param {string} property 
+     * @param {event} e 
+     * @description Toggles the control button (Shuffle / Repeat)
+     */
     toggleControl(property, e) {
         this[property] = !this[property];
         return this[property] ? (e.target.style.color = '#ccc') : (e.target.style.color = '#000'); ;
@@ -233,6 +274,9 @@ export default class MPlayer {
         ui.addClass(element, 'mp__playlist-btn--selected');
     }
 
+    /**
+     * @description Creates the UI layout of the mplayer and adds event listeners to controls
+     */
     createDetails() {
         let mpDetails = ui.el('div', { id: 'mpDetails', class: 'mp__details' });
         ui.append(mpDetails, ui.el('img', { src: 'https://via.placeholder.com/150x150', alt: 'Cover', class: 'mp__details-cover'}));
@@ -305,6 +349,9 @@ export default class MPlayer {
         ui.append(this.container, mpDetails);
     }
 
+    /**
+     * @description Create the playist/songlist portion of the UI
+     */
     createPlaylist() {
         let mpPlayList = ui.el('div', { id: 'mpPlayList', class: 'mp__playlist' });
         ui.append(mpPlayList, ui.el('h4', {}, 'Song List'));
@@ -320,17 +367,23 @@ export default class MPlayer {
         }
     }
 
-    createButton(song) {
+    /**
+     * 
+     * @param {object} songData
+     * @description Creates the individual song buttons in the playlist/songlist
+     *  
+     */
+    createButton(songData) {
         let mpItem = ui.el('div', {class: 'mp__playlist-btn' });
 
-        let mpItemText = ui.el('span', {}, song.name, { pointerEvents: 'none'});
+        let mpItemText = ui.el('span', {}, songData.name, { pointerEvents: 'none'});
 
-        let mpItemTime = ui.el('span', {}, song.artist, { pointerEvents: 'none' });
+        let mpItemTime = ui.el('span', {}, songData.artist, { pointerEvents: 'none' });
 
         ui.appendMulti(mpItem, [mpItemText, mpItemTime]);
 
         mpItem.addEventListener('click', e => {
-            const audio = this.dataAudioElementList.find(element => element.title === song.name );
+            const audio = this.dataAudioElementList.find(element => element.title === songData.name );
             
             this.play(audio);
 
@@ -343,11 +396,19 @@ export default class MPlayer {
         ui.append(ui.getElId('mpPlayListItems'), mpItem);
     }
 
+    /**
+     * 
+     * @param {object} songData
+     * @description Creates the HTMLAudioElement based on the songData and appends it to an array 
+     */
     createAudio(songData) {
         let mpAudioEl = ui.el('audio', {title: songData.name, src: songData.url });
         this.dataAudioElementList.push(mpAudioEl);
     }
 
+    /**
+     * @description Add event listeners for key control and progress/elapsed bar input
+     */
     addListeners() {
         this.progressBar.addEventListener('input', e => {
             if (this.progressBar && this.currentAudio) {
@@ -383,6 +444,9 @@ export default class MPlayer {
 		});
     }
 
+    /**
+     * @description Initialize the mplayer
+     */
     initialize() {
         if (this.dataSongList.length !== 0) {
             this.createDetails();
