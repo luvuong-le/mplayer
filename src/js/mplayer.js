@@ -219,7 +219,7 @@ export default class MPlayer {
 
     updateSongDetails(songData) {
         ui.query('.mp__details-cover').src = (!songData.cover) ? 'https://via.placeholder.com/150x150' : songData.cover;
-        ui.query('.mp__playing-now').textContent = songData.name.toLowerCase();
+        ui.query('.mp__playing-now').textContent = songData.name;
         this.currentAudio ? this.endTimeEl.textContent = moment.utc(this.currentAudio.duration * 1000).format('mm:ss') : null;
     }
 
@@ -323,7 +323,7 @@ export default class MPlayer {
     createButton(song) {
         let mpItem = ui.el('div', {class: 'mp__playlist-btn' });
 
-        let mpItemText = ui.el('span', {}, song.name.toLowerCase(), { pointerEvents: 'none'});
+        let mpItemText = ui.el('span', {}, song.name, { pointerEvents: 'none'});
 
         let mpItemTime = ui.el('span', {}, song.artist, { pointerEvents: 'none' });
 

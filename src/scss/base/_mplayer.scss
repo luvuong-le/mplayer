@@ -31,7 +31,6 @@
 	margin: 0 auto;
 	font-size: 2rem;
 	padding-top: 1.5rem;
-	transition: all 1.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 	overflow: hidden;
 	box-shadow: 0.8rem 1rem 1rem #aaa;
 	border-radius: 5px;
@@ -83,11 +82,18 @@
 		flex-flow: column;
 		justify-content: center;
 
+		@include respond(phone) {
+			margin: 0 auto;
+		}
+
 		& > h3,
 		& > p {
 			@include respond(phone) {
 				text-align: center;
 				width: 100%;
+				overflow: hidden;
+				width: 200px;
+				text-overflow: ellipsis;
 			}
 		}
 
@@ -132,8 +138,16 @@
 			background: #fff;
 
 			@include respond(phone) {
-				height: 4.5rem;
-				width: 4.5rem;
+				height: 3rem;
+				width: 3rem;
+				position: relative;
+				& > span {
+					display: block;
+					height: 100%;
+					width: 100%;
+					position: absolute;
+					top: 30%;
+				}
 			}
 
 			&:focus {
@@ -295,6 +309,10 @@
 			color: #fff;
 			border: 1px solid #fff;
 			display: flex;
+
+			& > span {
+				font-size: 1.5rem;
+			}
 
 			& > span:last-child {
 				margin-right: auto;

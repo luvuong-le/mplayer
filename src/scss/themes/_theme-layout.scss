@@ -1,0 +1,37 @@
+/*
+    Custom Theme SCSS File Layout
+*/
+
+.mp--theme-name {
+	/* Base themes go here, will override styles for the .mp class */
+
+	#{$mp}__details {
+		&-cover {
+		}
+	}
+
+	#{$mp}__playing {
+	}
+
+	#{$mp}__song-duration {
+	}
+
+	#{$mp}__volume {
+		&-slider {
+		}
+	}
+
+	#{$mp}__playlist {
+		&-items {
+		}
+
+		&-btn {
+		}
+	}
+
+	#{$mp}__options {
+	}
+
+	#{$mp}__controls {
+	}
+}
