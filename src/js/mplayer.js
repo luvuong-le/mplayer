@@ -16,6 +16,7 @@ export default class MPlayer {
         this.volume = config.volume || false; 
         this.mini = config.mini || false;
         this.position = config.position || false;
+        this.hideCoverArt = config.hideCoverArt || false;
     }
 
     /**
@@ -59,9 +60,13 @@ export default class MPlayer {
         this.fixed && this.mini && this.position ? this.setFixedPosition(this.position) : null;
 
         if (this.volume) {
-            this.volumeBar.value = this.volume * 100;
-            this.volumeValue.textContent = this.volume * 100;
+            this.volumeBar.value = Math.round(this.volume * 100);
+            this.volumeValue.textContent = Math.round(this.volume * 100);
         }
+
+        this.hideCoverArt ? ui.addClass(this.container, 'mp__no-cover-art') : null; 
+        
+        console.info('[MPlayer] Initialized with configurations successfully | v1.0');
     }
 
     
@@ -176,7 +181,7 @@ export default class MPlayer {
         this.shuffle ? this.playRandomSong() : null;
         
         if (!this.currentAudio) return; 
- 
+
         if (this.currentAudioIndex === this.dataSongList.length - 1) {
             this.toggleSelected(this.playlistBtns[0]);
             this.play(this.firstSong);
@@ -234,11 +239,11 @@ export default class MPlayer {
 			ui.setNewClass(this.volumeIcon, 'mp__volume-value fas fa-volume-off');
 		}
 
-        if (parseInt(this.volumeValue.textContent)  > 0 && parseInt(this.volumeValue.textContent)  < 35) {
+        if (parseInt(this.volumeValue.textContent)  > 0 && parseInt(this.volumeValue.textContent)  <= 35) {
             ui.setNewClass(this.volumeIcon, 'mp__volume-value fas fa-volume-down');
         }
 
-        if (parseInt(this.volumeValue.textContent)  > 35 && parseInt(this.volumeValue.textContent)  < 75) {
+        if (parseInt(this.volumeValue.textContent)  > 35 && parseInt(this.volumeValue.textContent)  <= 75) {
             ui.setNewClass(this.volumeIcon, 'mp__volume-value fas fa-volume-down');
         }
 
@@ -361,9 +366,9 @@ export default class MPlayer {
         ui.append(this.container, mpPlayList);
         
         // Create Music Player Items
-        for (let song of this.dataSongList) {
-            this.createButton(song);
-            this.createAudio(song);
+        for (let songData of this.dataSongList) {
+            this.createButton(songData);
+            this.createAudio(songData);
         }
     }
 
@@ -402,8 +407,7 @@ export default class MPlayer {
      * @description Creates the HTMLAudioElement based on the songData and appends it to an array 
      */
     createAudio(songData) {
-        let mpAudioEl = ui.el('audio', {title: songData.name, src: songData.url });
-        this.dataAudioElementList.push(mpAudioEl);
+        this.dataAudioElementList.push(ui.el('audio', { title: songData.name, src: songData.url }));
     }
 
     /**
@@ -438,7 +442,7 @@ export default class MPlayer {
                     this.setVolume();
 					break;
 				default:
-					console.log('Error');
+					console.warn('[ERROR=Key Error] Non Valid Key Pressed');
 					break;
 			}
 		});
@@ -448,12 +452,12 @@ export default class MPlayer {
      * @description Initialize the mplayer
      */
     initialize() {
-        if (this.dataSongList.length !== 0) {
-            this.createDetails();
-            this.createPlaylist();
-            this.addListeners();
-            this.setConfigurations();
-            this.setMultiSongCheck();
-        }
+        if (!this.container) throw new Error('[ERROR=No Container Element] MPlayer requires a container element to generate with'); 
+        if (!this.dataSongList) throw new Error('[ERROR=No Song Data Given] MPlayer can not be initialized without song data'); 
+        this.createDetails();
+        this.createPlaylist();
+        this.addListeners();
+        this.setConfigurations();
+        this.setMultiSongCheck();
     }
 }

@@ -9,7 +9,7 @@
 
 ## Project Information
 
-A HTML Music Player for the Web. Rebuilt from a previous version in order to be modular and able to be imported with different projects easily.
+A HTML Music Player for the Web. Rebuilt in order to be modular and able to be imported with different projects easily.
 
 ### Technologies Used
 
@@ -51,6 +51,7 @@ new MPlayer({
 	fixed: false,
 	theme: false,
 	position: false,
+	hideCoverArt: false,
 	mini: false,
 	volume: 0.5,
 });
@@ -69,15 +70,16 @@ songList = {
 
 ### Options / Properties
 
-| Option Name | Description                                                                                                      | Default           | Required |
-| ----------- | ---------------------------------------------------------------------------------------------------------------- | ----------------- | -------- |
-| theme       | Choose a specified theme                                                                                         | false             | No       |
-| mini        | Remove playlist showing and shrinks the player                                                                   | false             | No       |
-| fixed       | Make this a fixed music player (Mini needs to be enabled for this to work)                                       | false             | No       |
-| position    | Choose a position for the player if it's mini and fixed ('TOP_LEFT', 'TOP_RIGHT', 'BOTTOM_LEFT', 'BOTTOM_RIGHT') | false && centered | No       |
-| container   | Element container for the player                                                                                 | -                 | Yes      |
-| volume      | Set Volume for the player (Values between 0 - 1)                                                                 | 0.5               | No       |
-| song list   | Array of song objects                                                                                            | -                 | Yes      |
+| Option Name  | Description                                                                                                      | Default           | Required |
+| ------------ | ---------------------------------------------------------------------------------------------------------------- | ----------------- | -------- |
+| theme        | Choose a specified theme                                                                                         | false             | No       |
+| mini         | Remove playlist showing and shrinks the player                                                                   | false             | No       |
+| fixed        | Make this a fixed music player (Mini needs to be enabled for this to work)                                       | false             | No       |
+| position     | Choose a position for the player if it's mini and fixed ('TOP_LEFT', 'TOP_RIGHT', 'BOTTOM_LEFT', 'BOTTOM_RIGHT') | false && centered | No       |
+| container    | Element container for the player                                                                                 | -                 | Yes      |
+| hideCoverArt | Disable the cover art from showing in the player                                                                 | false             | No       |
+| volume       | Set Volume for the player (Values between 0 - 1)                                                                 | 0.5               | No       |
+| song list    | Array of song objects                                                                                            | -                 | Yes      |
 
 ### Available Themes
 

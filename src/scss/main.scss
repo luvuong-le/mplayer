@@ -3,6 +3,7 @@
 
 // Abstracts
 @import 'abstract/mixins';
+@import 'abstract/animations';
 
 // MPlayer Styles
 @import 'base/mplayer.scss';
@@ -12,3 +13,6 @@
 @import 'themes/materialistic';
 @import 'themes/light';
 @import 'themes/mini';
+
+// Configuration Styles
+@import 'config/config';

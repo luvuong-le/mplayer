@@ -4,8 +4,8 @@
 
     0 - 600px: Phones
     600 - 900px: Tablets Portrait
-    900 - 1350px: Tablet Landscape
-    1350 - 1800+ : Normal Styles
+    900 - 1450px: Tablet Landscape
+    1450 - 1800+ : Normal Styles
     1800+ Big desktop
 
 */
@@ -24,7 +24,7 @@
 	}
 
 	@if $breakpoint == tablet-landscape {
-		@media only screen and (max-width: 84.375em) {
+		@media only screen and (max-width: 90.625em) {
 			@content;
 		}
 	}

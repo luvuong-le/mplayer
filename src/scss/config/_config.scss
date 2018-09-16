@@ -1,0 +1,21 @@
+.mp__no-cover-art {
+	#{$mp}__details {
+		&-cover {
+			display: none;
+		}
+	}
+
+	#{$mp}__playing {
+		grid-column: 1 / -1;
+		margin: 0 auto;
+
+		& > h3,
+		& > p {
+			text-align: center;
+		}
+
+		@include respond(phone) {
+			margin: 0 auto;
+		}
+	}
+}
