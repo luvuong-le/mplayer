@@ -1,6 +1,6 @@
 import moment from  'moment';
-import ui from '../helpers/ui';
-import '../scss/main.scss';
+import ui from '@/helpers/ui';
+import '@/scss/main.scss';
 
 export default class MPlayer {
 
