@@ -6,7 +6,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 module.exports = {
     entry: ['./src/js/mplayer.js'],
     output: {
-        filename: 'bundle.js',
+        filename: 'mplayer.min.js',
         path: path.resolve(__dirname, 'dist/js'),
     },
     module: {

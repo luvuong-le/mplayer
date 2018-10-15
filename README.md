@@ -36,13 +36,31 @@ npm run build - Run webpack in production mode
 
 ### Setup / Usage
 
-```javascript
-import MPlayer from 'path/to/mplayer.js';
+Using Import or Require
 
+```javascript
+// Using Import
+import MPlayer from 'path/to/mplayer.min.js';
+
+// Using Require
+const MPlayer = require('path/to/mplayer.min.js');
+```
+
+Using Link and Script Tags
+
+```javascript
+<link rel="stylesheet" href="path/to/mplayer.min.css">
+
+<script src="path/to/mplayer.min.js"></script>
+```
+
+Initialize the music player
+
+```javascript
 const mplayer = new MPlayer(options);
 ```
 
-### Options Object Format
+### Options Object Format Example
 
 ```javascript
 new MPlayer({
@@ -108,7 +126,7 @@ Build the project using "npm run build" after SCSS editing is complete
 Import into main.scss: @import 'themes/custom-theme.scss'
 ```
 
-## Additional
+## Additional / Caveat
 
 -   Song Names must be _unique_
 
