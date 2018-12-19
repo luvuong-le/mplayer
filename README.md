@@ -1,4 +1,4 @@
-# 🎵 🎼 Music Player Module 🎵
+# 🎵 🎼 MPlayer 🎵
 
 [![devDependencies Status](https://david-dm.org/luvuong-le/mplayer-module/dev-status.svg)](https://david-dm.org/luvuong-le/mplayer-module?type=dev)
 [![dependencies Status](https://david-dm.org/luvuong-le/mplayer-module/status.svg)](https://david-dm.org/luvuong-le/mplayer-module)
